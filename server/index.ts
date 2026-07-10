@@ -50,6 +50,6 @@ wss.on("connection", (socket: WebSocket) => {
   });
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, "0.0.0.0", () => {
   console.log(`harness server listening on http://localhost:${PORT}  (ws: /ws)`);
 });
