@@ -26,6 +26,7 @@
     "express": "^5.1.0",
     "lucide-react": "^1.17.0",
     "marked": "^18.0.5",
+    "neon-new": "^0.15.0",
     "postgres": "^3.4.9",
     "radix-ui": "^1.5.0",
     "react": "^19.1.0",
