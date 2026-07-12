@@ -8,6 +8,7 @@ import { WebSocketServer, type WebSocket } from "ws";
 import { ensureSchema, clearEventLog } from "../harness/db";
 import { subscribe, history } from "../harness/bus";
 import { runAgentWorkflow } from "../harness/runtime";
+import { runSupervisorWorkflow } from "../harness/supervisor";
 import type { ClientMessage } from "@shared/events";
 
 const PORT = Number(process.env.PORT ?? 8787);
@@ -57,8 +58,11 @@ async function main() {
       }
 
       if (message.type === "submit_task") {
-        await DBOS.startWorkflow(runAgentWorkflow)(message.input);
-      }
+        // Pick the runtime: the single-agent loop, or the supervisor.
+        const workflow =
+          message.mode === "supervised" ? runSupervisorWorkflow : runAgentWorkflow;
+        await DBOS.startWorkflow(workflow)(message.input);
+       }
     });
 
     // Replay the durable timeline (including a workflow DBOS is recovering).
